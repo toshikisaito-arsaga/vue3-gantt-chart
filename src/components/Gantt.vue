@@ -24,6 +24,9 @@
           タスクを追加する
         </span>
       </button>
+      <teleport to="#form">
+        <div class="overlay" v-show="show" @click="show = false"></div>
+      </teleport>
     </div>
     <div id="gantt-content" class="flex">
       <div id="gantt-task">
@@ -404,6 +407,7 @@ export default {
         },
       ],
       task: "",
+      show: false,
     };
   },
   methods: {
@@ -598,7 +602,7 @@ export default {
       category["collapsed"] = !category["collapsed"];
     },
     addTask() {
-      console.log("click");
+      this.show = true;
     },
   },
   computed: {
@@ -682,3 +686,15 @@ export default {
   },
 };
 </script>
+
+<style>
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: gray;
+  opacity: 0.5;
+}
+</style>
