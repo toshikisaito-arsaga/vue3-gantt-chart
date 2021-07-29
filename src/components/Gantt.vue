@@ -218,8 +218,9 @@
               :style="bar.style"
               class="rounded-lg absolute h-5 bg-yellow-100"
               v-if="bar.task.cat === 'task'"
+              @mousedown="mouseDownMove(bar.task)"
             >
-              <div class="w-full h-full"></div>
+              <div class="w-full h-full" style="pointer-events: none;"></div>
             </div>
           </div>
         </div>
@@ -247,6 +248,11 @@ export default {
       today: moment(),
       block_size: 30,
       block_number: 0,
+      dragging: false,
+      pageX: "",
+      elememt: "",
+      left: "",
+      task_id: "",
       calendars: [],
       categories: [
         {
@@ -379,6 +385,15 @@ export default {
     todayPosition() {
       this.$refs.calendar.scrollLeft = this.scrollDistance;
     },
+    mouseDownMove(task) {
+      this.dragging = true;
+      this.pageX = window.event.pageX;
+      this.element = window.event.target;
+      this.left = window.event.target.style.left;
+      this.task_id = task.id;
+      console.log(window.event.pageX);
+      console.log(window.event.target);
+    },
   },
   computed: {
     calendarViewWidth() {
@@ -410,34 +425,34 @@ export default {
       return lists;
     },
     taskBars() {
-  let start_date = moment(this.start_month);
-  let top = 10;
-  let left;
-  let between;
-  let start;
-  let style;
-  return this.displayTasks.map(task => {
-    style = {}
-    if(task.cat==='task'){
-      let date_from = moment(task.start_date);
-      let date_to = moment(task.end_date);
-      between = date_to.diff(date_from, 'days');
-      between++;
-      start = date_from.diff(start_date, 'days');
-      left = start * this.block_size;
-      style = {
-        top: `${top}px`,
-        left: `${left}px`,
-        width: `${this.block_size * between}px`,
-      }
-    }
-    top = top + 40;
-    return {
-      style,
-      task
-    }
-  })
-},
+      let start_date = moment(this.start_month);
+      let top = 10;
+      let left;
+      let between;
+      let start;
+      let style;
+      return this.displayTasks.map((task) => {
+        style = {};
+        if (task.cat === "task") {
+          let date_from = moment(task.start_date);
+          let date_to = moment(task.end_date);
+          between = date_to.diff(date_from, "days");
+          between++;
+          start = date_from.diff(start_date, "days");
+          left = start * this.block_size;
+          style = {
+            top: `${top}px`,
+            left: `${left}px`,
+            width: `${this.block_size * between}px`,
+          };
+        }
+        top = top + 40;
+        return {
+          style,
+          task,
+        };
+      });
+    },
     displayTasks() {
       let display_task_number = Math.floor(this.calendarViewHeight / 40);
       return this.lists.slice(
