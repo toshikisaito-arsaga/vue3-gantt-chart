@@ -28,7 +28,8 @@
         <div class="base" v-show="show">
           <div class="overlay" v-show="show" @click="show = false"></div>
           <div class="content" v-show="show">
-            <h2 class="font-bold">タスクの追加</h2>
+            <h2 class="font-bold" v-if="update_mode">タスクの更新</h2>
+            <h2 class="font-bold" v-else>タスクの追加</h2>
             <div class="my-4">
               <label class="text-xs">カテゴリーID:</label>
               <select
@@ -88,7 +89,29 @@
                 type="number"
               />
             </div>
-            <div>
+            <div v-if="update_mode" class="flex items-center justify-between">
+              <button
+                @click="updateTask(form.id)"
+                class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-lg text-xs flex items-center"
+              >
+                <svg
+                  class="w-4"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+                  />
+                </svg>
+                <span class="text-xs font-bold text-white">タスクを更新</span>
+              </button>
+            </div>
+            <div v-else>
               <button
                 @click="saveTask"
                 class="bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded-lg flex items-center"
@@ -250,6 +273,7 @@
             </template>
             <template v-else>
               <div
+                @click="editTask(task)"
                 class="border-r flex items-center font-bold w-48 text-sm pl-4"
               >
                 {{ task.name }}
@@ -505,6 +529,7 @@ export default {
         incharge_user: "",
         percentage: 0,
       },
+      update_mode: false,
     };
   },
   methods: {
@@ -699,10 +724,23 @@ export default {
       category["collapsed"] = !category["collapsed"];
     },
     addTask() {
+      this.update_mode = false;
+      this.form = {};
       this.show = true;
     },
     saveTask() {
       this.tasks.push(this.form);
+      this.form = {};
+      this.show = false;
+    },
+    editTask(task) {
+      this.update_mode = true;
+      this.show = true;
+      Object.assign(this.form, task);
+    },
+    updateTask(id) {
+      let task = this.tasks.find((task) => task.id === id);
+      Object.assign(task, this.form);
       this.form = {};
       this.show = false;
     },
