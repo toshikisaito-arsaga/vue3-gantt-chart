@@ -1,16 +1,24 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div>
+    <Calender />
+    <Gantt />
+  </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import Calender from '@/components/Calender';
+import Gantt from '@/components/Gantt';
 
 export default {
   name: 'App',
   components: {
-    HelloWorld
-  }
+    Calender,
+    Gantt,
+  },
+  updated() {
+  },
+  data() {
+  },
 }
 </script>
 
