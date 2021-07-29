@@ -104,9 +104,11 @@
                   items-center
                   justify-center
                 "
-                :style="`width:${calendar.calendar * block_size}px;left:${
-                  calendar.start_block_number * block_size
-                }px`"
+                :style="
+                  `width:${calendar.calendar *
+                    block_size}px;left:${calendar.start_block_number *
+                    block_size}px`
+                "
               >
                 {{ calendar.date }}
               </div>
@@ -135,9 +137,10 @@
                       calendar.month === today.month() &&
                       day.day === today.date(),
                   }"
-                  :style="`width:${block_size}px;left:${
-                    day.block_number * block_size
-                  }px`"
+                  :style="
+                    `width:${block_size}px;left:${day.block_number *
+                      block_size}px`
+                  "
                 >
                   <span>{{ day.day }}</span>
                   <span>{{ day.dayOfWeek }}</span>
@@ -154,9 +157,10 @@
                     'bg-blue-100': day.dayOfWeek === '土',
                     'bg-red-100': day.dayOfWeek === '日',
                   }"
-                  :style="`width:${block_size}px;left:${
-                    day.block_number * block_size
-                  }px;height:${calendarViewHeight}px`"
+                  :style="
+                    `width:${block_size}px;left:${day.block_number *
+                      block_size}px;height:${calendarViewHeight}px`
+                  "
                 ></div>
               </div>
             </div>
@@ -191,6 +195,74 @@ export default {
       block_size: 30,
       block_number: 0,
       calendars: [],
+      categories: [
+        {
+          id: 1,
+          name: "テストA",
+          collapsed: false,
+        },
+        {
+          id: 2,
+          name: "テストB",
+          collapsed: false,
+        },
+      ],
+      tasks: [
+        {
+          id: 1,
+          category_id: 1,
+          name: "テスト1",
+          start_date: "2020-11-18",
+          end_date: "2020-11-20",
+          incharge_user: "鈴木",
+          percentage: 100,
+        },
+        {
+          id: 2,
+          category_id: 1,
+          name: "テスト2",
+          start_date: "2020-11-19",
+          end_date: "2020-11-23",
+          incharge_user: "佐藤",
+          percentage: 90,
+        },
+        {
+          id: 3,
+          category_id: 1,
+          name: "テスト3",
+          start_date: "2020-11-19",
+          end_date: "2020-12-04",
+          incharge_user: "鈴木",
+          percentage: 40,
+        },
+        {
+          id: 4,
+          category_id: 1,
+          name: "テスト4",
+          start_date: "2020-11-21",
+          end_date: "2020-11-30",
+          incharge_user: "山下",
+          percentage: 60,
+        },
+        {
+          id: 5,
+          category_id: 1,
+          name: "テスト5",
+          start_date: "2020-11-25",
+          end_date: "2020-12-04",
+          incharge_user: "佐藤",
+          percentage: 5,
+        },
+        {
+          id: 6,
+          category_id: 2,
+          name: "テスト6",
+          start_date: "2020-11-28",
+          end_date: "2020-12-08",
+          incharge_user: "佐藤",
+          percentage: 0,
+        },
+      ],
     };
   },
   methods: {
@@ -263,6 +335,18 @@ export default {
       let start_date = moment(this.start_month);
       let between_days = this.today.diff(start_date, "days");
       return between_days * this.block_size;
+    },
+    lists() {
+      let lists = [];
+      this.categories.map((category) => {
+        lists.push({ cat: "category", ...category });
+        this.tasks.map((task) => {
+          if (task.category_id === category.id) {
+            lists.push({ cat: "task", ...task });
+          }
+        });
+      });
+      return lists;
     },
   },
   created() {},
