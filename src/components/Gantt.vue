@@ -25,7 +25,12 @@
         </span>
       </button>
       <teleport to="#form">
-        <div class="overlay" v-show="show" @click="show = false"></div>
+        <div class="base" v-show="show">
+          <div class="overlay" v-show="show" @click="show = false"></div>
+          <div class="content" v-show="show">
+            フォーム
+          </div>
+        </div>
       </teleport>
     </div>
     <div id="gantt-content" class="flex">
@@ -688,6 +693,16 @@ export default {
 </script>
 
 <style>
+.base {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  margin-top: 50px;
+}
+
 .overlay {
   position: fixed;
   top: 0;
@@ -696,5 +711,12 @@ export default {
   bottom: 0;
   background-color: gray;
   opacity: 0.5;
+}
+
+.content {
+  background-color: white;
+  position: relative;
+  border-radius: 10px;
+  padding: 40px;
 }
 </style>
