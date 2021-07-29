@@ -81,6 +81,44 @@
             進捗
           </div>
         </div>
+        <div id="gantt-task-list">
+          <div
+            v-for="(list, index) in lists"
+            :key="index"
+            class="flex h-10 border-b"
+          >
+            <template v-if="list.cat === 'category'">
+              <div class="flex items-center font-bold w-full text-sm pl-2">
+                {{ list.name }}
+              </div>
+            </template>
+            <template v-else>
+              <div
+                class="border-r flex items-center font-bold w-48 text-sm pl-4"
+              >
+                {{ list.name }}
+              </div>
+              <div
+                class="border-r flex items-center justify-center w-24 text-sm"
+              >
+                {{ list.start_date }}
+              </div>
+              <div
+                class="border-r flex items-center justify-center w-24 text-sm"
+              >
+                {{ list.end_date }}
+              </div>
+              <div
+                class="border-r flex items-center justify-center w-16 text-sm"
+              >
+                {{ list.incharge_user }}
+              </div>
+              <div class="flex items-center justify-center w-12 text-sm">
+                {{ list.percentage }}%
+              </div>
+            </template>
+          </div>
+        </div>
       </div>
       <div
         id="gantt-calendar"
