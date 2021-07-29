@@ -394,6 +394,13 @@ export default {
       console.log(window.event.pageX);
       console.log(window.event.target);
     },
+    mouseMove() {
+      if (this.dragging) {
+        let diff = this.pageX - event.pageX;
+        this.element.style.left = `${parseInt(this.left.replace("px", "")) -
+          diff}px`;
+      }
+    },
   },
   computed: {
     calendarViewWidth() {
@@ -470,6 +477,7 @@ export default {
     });
     window.addEventListener("resize", this.getWindowSize);
     window.addEventListener("wheel", this.windowSizeCheck);
+    window.addEventListener("mousemove", this.mouseMove);
   },
 };
 </script>
