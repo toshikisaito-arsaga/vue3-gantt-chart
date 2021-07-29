@@ -391,8 +391,6 @@ export default {
       this.element = window.event.target;
       this.left = window.event.target.style.left;
       this.task_id = task.id;
-      console.log(window.event.pageX);
-      console.log(window.event.target);
     },
     mouseMove() {
       if (this.dragging) {
@@ -400,6 +398,9 @@ export default {
         this.element.style.left = `${parseInt(this.left.replace("px", "")) -
           diff}px`;
       }
+    },
+    stopDrag() {
+      this.dragging = false;
     },
   },
   computed: {
@@ -478,6 +479,7 @@ export default {
     window.addEventListener("resize", this.getWindowSize);
     window.addEventListener("wheel", this.windowSizeCheck);
     window.addEventListener("mousemove", this.mouseMove);
+    window.addEventListener("mouseup", this.stopDrag);
   },
 };
 </script>
