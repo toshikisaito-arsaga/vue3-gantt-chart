@@ -221,6 +221,16 @@
               @mousedown="mouseDownMove(bar.task)"
             >
               <div class="w-full h-full" style="pointer-events: none;"></div>
+              <div
+                class="absolute w-2 h-2 bg-gray-300 border border-black"
+                style="top:6px;left:-6px;cursor:col-resize"
+                @mousedown.stop="mouseDownResize(bar.task, 'left')"
+              ></div>
+              <div
+                class="absolute w-2 h-2 bg-gray-300 border border-black"
+                style="top:6px;right:-6px;cursor:col-resize"
+                @mousedown.stop="mouseDownResize(bar.task, 'right')"
+              ></div>
             </div>
           </div>
         </div>
@@ -253,6 +263,9 @@ export default {
       elememt: "",
       left: "",
       task_id: "",
+      width: "",
+      leftResizing: false,
+      rightResizing: false,
       calendars: [],
       categories: [
         {
@@ -392,11 +405,38 @@ export default {
       this.left = window.event.target.style.left;
       this.task_id = task.id;
     },
+    mouseDownResize(task, direction) {
+      direction === "left"
+        ? (this.leftResizing = true)
+        : (this.rightResizing = true);
+      this.pageX = window.event.pageX;
+      this.width = window.event.target.parentElement.style.width;
+      this.left = window.event.target.parentElement.style.left;
+      this.element = window.event.target.parentElement;
+      this.task_id = task.id;
+    },
     mouseMove() {
       if (this.dragging) {
         let diff = this.pageX - event.pageX;
         this.element.style.left = `${parseInt(this.left.replace("px", "")) -
           diff}px`;
+      }
+    },
+    mouseResize() {
+      if (this.leftResizing) {
+        let diff = this.pageX - event.pageX;
+        if (parseInt(this.width.replace("px", "")) + diff > this.block_size) {
+          this.element.style.width = `${parseInt(this.width.replace("px", "")) +
+            diff}px`;
+          this.element.style.left = `${this.left.replace("px", "") - diff}px`;
+        }
+      }
+      if (this.rightResizing) {
+        let diff = this.pageX - event.pageX;
+        if (parseInt(this.width.replace("px", "")) - diff > this.block_size) {
+          this.element.style.width = `${parseInt(this.width.replace("px", "")) -
+            diff}px`;
+        }
       }
     },
     stopDrag() {
@@ -413,7 +453,49 @@ export default {
           this.element.style.left = `${this.left.replace("px", "")}px`;
         }
       }
+      if (this.leftResizing) {
+        let diff = this.pageX - event.pageX;
+        let days = Math.ceil(diff / this.block_size);
+        if (days !== 0) {
+          let task = this.tasks.find((task) => task.id === this.task_id);
+          let start_date = moment(task.start_date).add(-days, "days");
+          let end_date = moment(task.end_date);
+          if (end_date.diff(start_date, "days") <= 0) {
+            task["start_date"] = end_date.format("YYYY-MM-DD");
+          } else {
+            task["start_date"] = start_date.format("YYYY-MM-DD");
+          }
+        } else {
+          this.element.style.width = this.width;
+          this.element.style.left = `${this.left.replace("px", "")}px`;
+        }
+      }
+      if (this.rightResizing) {
+        let diff = this.pageX - event.pageX;
+        let days = Math.ceil(diff / this.block_size);
+        if (days === 1) {
+          this.element.style.width = `${parseInt(
+            this.width.replace("px", "")
+          )}px`;
+        } else if (days <= 2) {
+          days--;
+          let task = this.tasks.find((task) => task.id === this.task_id);
+          let end_date = moment(task.end_date).add(-days, "days");
+          task["end_date"] = end_date.format("YYYY-MM-DD");
+        } else {
+          let task = this.tasks.find((task) => task.id === this.task_id);
+          let start_date = moment(task.start_date);
+          let end_date = moment(task.end_date).add(-days, "days");
+          if (end_date.diff(start_date, "days") < 0) {
+            task["end_date"] = start_date.format("YYYY-MM-DD");
+          } else {
+            task["end_date"] = end_date.format("YYYY-MM-DD");
+          }
+        }
+      }
       this.dragging = false;
+      this.leftResizing = false;
+      this.rightResizing = false;
     },
   },
   computed: {
@@ -493,6 +575,7 @@ export default {
     window.addEventListener("wheel", this.windowSizeCheck);
     window.addEventListener("mousemove", this.mouseMove);
     window.addEventListener("mouseup", this.stopDrag);
+    window.addEventListener("mousemove", this.mouseResize);
   },
 };
 </script>
