@@ -220,7 +220,14 @@
               v-if="bar.task.cat === 'task'"
               @mousedown="mouseDownMove(bar.task)"
             >
-              <div class="w-full h-full" style="pointer-events: none;"></div>
+              <div class="w-full h-full" style="pointer-events: none;">
+                <div
+                  class="h-full bg-yellow-500 rounded-l-lg"
+                  style="pointer-events: none;"
+                  :style="`width:${bar.task.percentage}%`"
+                  :class="{ 'rounded-r-lg': bar.task.percentage === 100 }"
+                ></div>
+              </div>
               <div
                 class="absolute w-2 h-2 bg-gray-300 border border-black"
                 style="top:6px;left:-6px;cursor:col-resize"
