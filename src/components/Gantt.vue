@@ -400,6 +400,19 @@ export default {
       }
     },
     stopDrag() {
+      if (this.dragging) {
+        let diff = this.pageX - event.pageX;
+        let days = Math.ceil(diff / this.block_size);
+        if (days !== 0) {
+          let task = this.tasks.find((task) => task.id === this.task_id);
+          let start_date = moment(task.start_date).add(-days, "days");
+          let end_date = moment(task.end_date).add(-days, "days");
+          task["start_date"] = start_date.format("YYYY-MM-DD");
+          task["end_date"] = end_date.format("YYYY-MM-DD");
+        } else {
+          this.element.style.left = `${this.left.replace("px", "")}px`;
+        }
+      }
       this.dragging = false;
     },
   },
