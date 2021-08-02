@@ -634,14 +634,14 @@ export default {
     },
     mouseMove() {
       if (this.dragging) {
-        let diff = this.pageX - event.pageX;
+        let diff = this.pageX - window.event.pageX;
         this.element.style.left = `${parseInt(this.left.replace("px", "")) -
           diff}px`;
       }
     },
     mouseResize() {
       if (this.leftResizing) {
-        let diff = this.pageX - event.pageX;
+        let diff = this.pageX - window.event.pageX;
         if (parseInt(this.width.replace("px", "")) + diff > this.block_size) {
           this.element.style.width = `${parseInt(this.width.replace("px", "")) +
             diff}px`;
@@ -649,7 +649,7 @@ export default {
         }
       }
       if (this.rightResizing) {
-        let diff = this.pageX - event.pageX;
+        let diff = this.pageX - window.event.pageX;
         if (parseInt(this.width.replace("px", "")) - diff > this.block_size) {
           this.element.style.width = `${parseInt(this.width.replace("px", "")) -
             diff}px`;
@@ -658,7 +658,7 @@ export default {
     },
     stopDrag() {
       if (this.dragging) {
-        let diff = this.pageX - event.pageX;
+        let diff = this.pageX - window.event.pageX;
         let days = Math.ceil(diff / this.block_size);
         if (days !== 0) {
           let task = this.tasks.find((task) => task.id === this.task_id);
@@ -671,7 +671,7 @@ export default {
         }
       }
       if (this.leftResizing) {
-        let diff = this.pageX - event.pageX;
+        let diff = this.pageX - window.event.pageX;
         let days = Math.ceil(diff / this.block_size);
         if (days !== 0) {
           let task = this.tasks.find((task) => task.id === this.task_id);
@@ -688,7 +688,7 @@ export default {
         }
       }
       if (this.rightResizing) {
-        let diff = this.pageX - event.pageX;
+        let diff = this.pageX - window.event.pageX;
         let days = Math.ceil(diff / this.block_size);
         if (days === 1) {
           this.element.style.width = `${parseInt(
