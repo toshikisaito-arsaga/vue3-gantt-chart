@@ -483,8 +483,7 @@ export default {
     getWindowSize() {
       this.inner_width = window.innerWidth;
       this.inner_height = window.innerHeight;
-      // this.task_width = this.$refs.task.offsetWidth;
-      this.task_width = 496;
+      this.task_width = this.$refs.task.offsetWidth;
       this.task_height = this.$refs.task.offsetHeight;
     },
     windowSizeCheck() {
@@ -772,7 +771,9 @@ export default {
   created() {},
   mounted() {
     this.getCalendar();
-    this.getWindowSize();
+    setTimeout(() => {
+      this.getWindowSize();
+    }, 100);
     this.$nextTick(() => {
       this.todayPosition();
     });
