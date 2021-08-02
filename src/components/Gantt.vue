@@ -81,14 +81,6 @@
                 type="date"
               />
             </div>
-            <div class="my-4">
-              <label class="text-xs">進捗度:</label>
-              <input
-                class="text-xs border rounded-lg px-4 py-2"
-                v-model="form.percentage"
-                type="number"
-              />
-            </div>
             <div v-if="update_mode" class="flex items-center justify-between">
               <button
                 @click="updateTask(form.id)"
@@ -222,20 +214,6 @@
           >
             担当
           </div>
-          <div
-            class="
-              border-t border-r border-b
-              flex
-              items-center
-              justify-center
-              font-bold
-              text-xs
-              w-12
-              h-full
-            "
-          >
-            進捗
-          </div>
         </div>
         <div
           id="gantt-task-list"
@@ -312,9 +290,6 @@
                 class="border-r flex items-center justify-center w-16 text-sm"
               >
                 {{ task.incharge_user }}
-              </div>
-              <div class="flex items-center justify-center w-12 text-sm">
-                {{ task.percentage }}%
               </div>
             </template>
           </div>
@@ -416,14 +391,6 @@
               v-if="bar.task.cat === 'task'"
               @mousedown="mouseDownMove(bar.task)"
             >
-              <div class="w-full h-full" style="pointer-events: none;">
-                <div
-                  class="h-full bg-yellow-500 rounded-l-lg"
-                  style="pointer-events: none;"
-                  :style="`width:${bar.task.percentage}%`"
-                  :class="{ 'rounded-r-lg': bar.task.percentage === 100 }"
-                ></div>
-              </div>
               <div
                 class="absolute w-2 h-2 bg-gray-300 border border-black"
                 style="top:6px;left:-6px;cursor:col-resize"
@@ -489,8 +456,6 @@ export default {
           name: "テスト1",
           start_date: "2021-07-18",
           end_date: "2021-07-20",
-          incharge_user: "鈴木",
-          percentage: 100,
         },
         {
           id: 2,
@@ -498,8 +463,6 @@ export default {
           name: "テスト2",
           start_date: "2021-07-19",
           end_date: "2021-07-23",
-          incharge_user: "佐藤",
-          percentage: 90,
         },
         {
           id: 3,
@@ -507,8 +470,6 @@ export default {
           name: "テスト3",
           start_date: "2021-07-19",
           end_date: "2021-08-04",
-          incharge_user: "鈴木",
-          percentage: 40,
         },
         {
           id: 4,
@@ -516,8 +477,6 @@ export default {
           name: "テスト4",
           start_date: "2021-07-21",
           end_date: "2021-07-30",
-          incharge_user: "山下",
-          percentage: 60,
         },
         {
           id: 5,
@@ -525,8 +484,6 @@ export default {
           name: "テスト5",
           start_date: "2021-07-25",
           end_date: "2021-08-04",
-          incharge_user: "佐藤",
-          percentage: 5,
         },
         {
           id: 6,
@@ -534,8 +491,6 @@ export default {
           name: "テスト6",
           start_date: "2021-07-28",
           end_date: "2021-08-08",
-          incharge_user: "佐藤",
-          percentage: 0,
         },
       ],
       task: "",
@@ -547,7 +502,6 @@ export default {
         start_date: "",
         end_date: "",
         incharge_user: "",
-        percentage: 0,
       },
       update_mode: false,
     };
