@@ -611,7 +611,9 @@ export default {
       return block_number;
     },
     todayPosition() {
-      this.$refs.calendar.scrollLeft = this.scrollDistance;
+      setTimeout(() => {
+        this.$refs.calendar.scrollLeft = this.scrollDistance;
+      }, 100);
     },
     mouseDownMove(task) {
       this.dragging = true;
