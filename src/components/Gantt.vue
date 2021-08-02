@@ -59,13 +59,6 @@
               />
             </div>
             <div class="my-4">
-              <label class="text-xs">担当者:</label>
-              <input
-                class="text-xs border rounded-lg px-4 py-2"
-                v-model="form.incharge_user"
-              />
-            </div>
-            <div class="my-4">
               <label class="text-xs">開始日:</label>
               <input
                 class="text-xs border rounded-lg px-4 py-2"
@@ -200,20 +193,6 @@
           >
             完了期限日
           </div>
-          <div
-            class="
-              border-t border-r border-b
-              flex
-              items-center
-              justify-center
-              font-bold
-              text-xs
-              w-16
-              h-full
-            "
-          >
-            担当
-          </div>
         </div>
         <div
           id="gantt-task-list"
@@ -285,11 +264,6 @@
                 class="border-r flex items-center justify-center w-24 text-sm"
               >
                 {{ task.end_date }}
-              </div>
-              <div
-                class="border-r flex items-center justify-center w-16 text-sm"
-              >
-                {{ task.incharge_user }}
               </div>
             </template>
           </div>
@@ -501,7 +475,6 @@ export default {
         name: "",
         start_date: "",
         end_date: "",
-        incharge_user: "",
       },
       update_mode: false,
     };
